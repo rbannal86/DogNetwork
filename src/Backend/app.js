@@ -1,8 +1,8 @@
 const express = require("express");
 const { graphqlHTTP } = require("express-graphql");
 const graphql = require("graphql");
-const db = require("./queries");
 const { Client } = require('pg');
+const joinMonster = require('join-monster');
 
 const client = new Client({
     user: "abannow",
@@ -19,6 +19,20 @@ const port = 5000;
 
 app.use(express.json());
 
+const Dog = new graphql.GraphQLObjectType({
+    name: 'Dog',
+    extensions: {
+        joinMonster: {
+            sqlTable: 'dogs',
+            uniqueKey: 'id'
+        }
+    },
+    fields: () => ({
+        id: { type: graphql.GraphQLInt },
+        name: { type: graphql.GraphQLString },
+    })
+})
+
 const QueryRoot = new graphql.GraphQLObjectType({
   name: "Query",
   fields: () => ({
@@ -26,6 +40,30 @@ const QueryRoot = new graphql.GraphQLObjectType({
       type: graphql.GraphQLString,
       resolve: () => "Woof woof!",
     },
+    dogs: {
+        type: new graphql.GraphQLList(Dog),
+        resolve: (parent, args, context, resolveInfo) => {
+            return joinMonster.default(resolveInfo, {}, sql => {
+                return client.query(sql)
+            })
+        }
+    },
+    dog: {
+        type: Dog,
+        args: { 
+          id: { type: graphql.GraphQLInt },
+        },
+        extensions: {
+          joinMonster: {
+            where: (dogsTable, args, context) => `${dogsTable}.id = ${args.id}`
+          },
+        },
+        resolve: (parent, args, context, resolveInfo) => {
+            return joinMonster.default(resolveInfo, {}, sql => {
+                return client.query(sql)
+            })
+        }
+    }
   }),
 });
 
@@ -38,16 +76,6 @@ app.use(
     graphiql: true,
   })
 );
-
-// app.use(express.urlencoded({
-//     extended: true,
-// }))
-
-// app.get('/', (req, res) => {
-//     res.json({ info: 'STUFF ABOUT DOGS' })
-// })
-
-// app.get('/dogs', db.getDogs)
 
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
