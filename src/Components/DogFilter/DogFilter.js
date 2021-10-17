@@ -1,27 +1,27 @@
-import { FETCH_BREEDS } from "../../graphql/queries";
 import { useQuery } from "@apollo/client";
 
-const DogFilter = ({handleFilter, selectedBreed}) => {
-    const { loading, error, data } = useQuery(FETCH_BREEDS);
+const DogFilter = ({handleFilter, selected, query, subject}) => {
+    const { loading, error, data } = useQuery(query);
+
+    if(error) return <h2>Error Loading Filter</h2>
+
     
-    if(error) return <h2>Whoops!</h2>
-
-    if(loading) return <h2>Loading...</h2>
-
+    if(loading) return <h3>Loading...</h3>
+    
     const setSelected = () => {
-        if(selectedBreed.length > 1) return '';
-        return selectedBreed[0];
+        if(selected.length > 1) return '';
+        return selected[0];
     }
 
     const generateOptions = () => {
-        return data.breeds.map((breed) => <option value={breed.id} key={breed.name}>{breed.name}</option>);
+        return data[subject].map((item) => <option value={item.id} key={item.id}>{item.name}</option>)
     }
 
     return(
         <div>
             <select
-                name='breed'
-                id='breed'
+                name={subject}
+                id={subject}
                 onChange={(e) => handleFilter(e.target.value)}
                 defaultValue={setSelected()}
             >
