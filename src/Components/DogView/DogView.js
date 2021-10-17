@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@apollo/client";
-import { BREED_FILTER } from "../../graphql/queries";
+import { FETCH_DOGS_FILTER } from "../../graphql/queries";
 
 import DogCard from '../DogCard/DogCard';
 import FilterSidebar from "../FilterSidebar/FilterSidebar";
@@ -10,12 +10,14 @@ import './DogView.css'
 
 const DogView = () => {
   const [breed, setBreed] = useState([...Array(100).keys()]);
-  const [size, setSize] = useState(['Small', 'Medium', 'Large'])
+  const [size, setSize] = useState(['Small', 'Medium', 'Large']);
+  const [sex, setSex] = useState(['Male', 'Female']);
 
-  const { loading, error, data } = useQuery(BREED_FILTER, {
+  const { loading, error, data } = useQuery(FETCH_DOGS_FILTER, {
     variables: {
       breed,
-      size
+      size,
+      sex
     }
   });
 
@@ -25,18 +27,25 @@ const DogView = () => {
   };
 
   const handleSizeFilter = (size) => {
-    if (size === '') setSize(['Small', 'Medium', 'Large'])
-    else setSize([size])
+    if (size === '') setSize(['Small', 'Medium', 'Large']);
+    else setSize([size]);
+  }
+  
+  const handleSexFilter = (sex) => {
+    if (sex === '') setSex(['Male', 'Female']);
+    else setSex([sex]);
   }
   
   const filterHandlers = {
     handleBreedFilter,
-    handleSizeFilter
+    handleSizeFilter,
+    handleSexFilter
   }
 
   const selectedValues = {
     size,
-    breed
+    breed,
+    sex
   }
 
   const renderDogs = () => {
