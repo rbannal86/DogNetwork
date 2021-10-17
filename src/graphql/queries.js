@@ -25,10 +25,18 @@ export const FETCH_BREEDS = gql`
             id
         }
     }
-`  
+`
+
+export const FETCH_SIZES = gql`
+    query SizeQuery {
+        breeds(distinct_on: size) {
+        size
+        }
+    }
+`
 export const BREED_FILTER =  gql`
-    query MyQuery($breed: [Int]) {
-        dogs(where: {deactivated: {_is_null: true}, breed: {_in: $breed}}) {
+    query MyQuery($breed: [Int], $size: [String]) {
+        dogs(where: {deactivated: {_is_null: true}, breed: {_in: $breed}, breedByBreed: {size: {_in: $size}}}) {
           age
           sex
           breedByBreed {

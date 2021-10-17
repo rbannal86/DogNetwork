@@ -10,10 +10,12 @@ import './DogView.css'
 
 const DogView = () => {
   const [breed, setBreed] = useState([...Array(100).keys()]);
+  const [size, setSize] = useState(['Small', 'Medium', 'Large'])
 
   const { loading, error, data } = useQuery(BREED_FILTER, {
     variables: {
-      breed
+      breed,
+      size
     }
   });
 
@@ -21,6 +23,21 @@ const DogView = () => {
     if (breed === '') setBreed([...Array(100).keys()]);
     else setBreed([breed]);
   };
+
+  const handleSizeFilter = (size) => {
+    if (size === '') setSize(['Small', 'Medium', 'Large'])
+    else setSize([size])
+  }
+  
+  const filterHandlers = {
+    handleBreedFilter,
+    handleSizeFilter
+  }
+
+  const selectedValues = {
+    size,
+    breed
+  }
 
   const renderDogs = () => {
     return data.dogs.map((dog, index) => {
@@ -38,7 +55,7 @@ const DogView = () => {
   return (
     <div className="dogview-main">
       {/* <DogFilter handleFilter={handleBreedFilter} selectedBreed={breed}/> */}
-      <FilterSidebar handleFilter={handleBreedFilter} selectedBreed={breed}/>
+      <FilterSidebar filterHandlers={filterHandlers} selectedValues={selectedValues}/>
       {error ? <h2>Error Fetching Dogs</h2> : null}
       {loading ? <LoadingDisplay /> : null}
       {!error && !loading ?
