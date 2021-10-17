@@ -12,12 +12,12 @@ function App() {
       <header className="App-header">
         <h1>DogNetwork</h1>
       </header>
-      <body>
+      <div>
         <div className="App-main">
           <SelectionBar setView={setView} />
           <div hidden={!view}>{view === "view" ? <DogView /> : <DogAdd />}</div>
         </div>
-      </body>
+      </div>
     </div>
   );
 }
