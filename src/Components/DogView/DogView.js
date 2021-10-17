@@ -12,12 +12,14 @@ const DogView = () => {
   const [breed, setBreed] = useState([...Array(100).keys()]);
   const [size, setSize] = useState(['Small', 'Medium', 'Large']);
   const [sex, setSex] = useState(['Male', 'Female']);
+  const [name, setName] = useState('.*');
 
   const { loading, error, data } = useQuery(FETCH_DOGS_FILTER, {
     variables: {
       breed,
       size,
-      sex
+      sex,
+      name
     }
   });
 
@@ -30,22 +32,29 @@ const DogView = () => {
     if (size === '') setSize(['Small', 'Medium', 'Large']);
     else setSize([size]);
   }
-  
+
   const handleSexFilter = (sex) => {
     if (sex === '') setSex(['Male', 'Female']);
     else setSex([sex]);
   }
-  
+
+  const handleNameFilter = (name) => {
+    if (name === '') setName('.*');
+    else setName(name);
+  };
+
   const filterHandlers = {
     handleBreedFilter,
     handleSizeFilter,
-    handleSexFilter
+    handleSexFilter,
+    handleNameFilter
   }
 
   const selectedValues = {
     size,
     breed,
-    sex
+    sex,
+    name
   }
 
   const renderDogs = () => {
