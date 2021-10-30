@@ -6,6 +6,7 @@ import InputFilter from '../DogFilter/InputFilter'
 const FilterSidebar = ({filterHandlers, selectedValues}) => {
     return(
         <div className='filtersidebar-main'>
+            <h2>Filters</h2>
             <h3>Breed</h3>
             <SelectFilter handleFilter={filterHandlers.handleBreedFilter} selected={selectedValues.breed} query={FETCH_BREEDS} subject='breeds' valueKey='id' nameKey='name'/>
             <h3>Size</h3>

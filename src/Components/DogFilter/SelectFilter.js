@@ -10,10 +10,9 @@ const SelectFilter = ({handleFilter, selected, query, subject, valueKey, nameKey
     if(error) return <h2>Error Loading Filter</h2>
 
     if(loading) return <h3>Loading...</h3>
-    
+
     const setSelected = () => {
-        console.log(selected)
-        if(selected.length > 1) return ' ';
+        if(selected.length > 1) return ``;
         return selected[0];
     }
 
@@ -26,11 +25,12 @@ const SelectFilter = ({handleFilter, selected, query, subject, valueKey, nameKey
             name={subject}
             labelId={subject}
             onChange={(e) => handleFilter(e.target.value)}
-            defaultValue={setSelected()}
-            value={setSelected()}
+            defaultValue={``}
+            value={setSelected() || ``}
             className="dogfilter-input"
+            sx={{ backgroundColor: 'whitesmoke', width: '100%', fontSize: '1.2rem', height: '2rem' }}
         >
-            <MenuItem value={' '}>Any</MenuItem>
+            <MenuItem value={``}>Any</MenuItem>
             {generateOptions()}
         </Select>
     )

@@ -1,4 +1,9 @@
 .filtersidebar-main {
     width: 20%;
+    max-width: 20%;
     text-align: left;
+    background-color: slategray;
+    margin-right: 3%;
+    padding: 2%;
+    padding-top: 1%;
 }

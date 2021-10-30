@@ -16,6 +16,7 @@ const DogView = () => {
   const [sex, setSex] = useState(['Male', 'Female']);
   const [name, setName] = useState('.*');
   const [dogsUpdated, setDogsUpdated] = useState(false);
+  const [offset, setOffset] = useState(0)
 
   const { loading, error, data, refetch: refetchDogs } = useQuery(FETCH_DOGS_FILTER, {
     variables: {
@@ -23,7 +24,7 @@ const DogView = () => {
       size,
       sex,
       name,
-      offset: 0,
+      offset,
       limit: 100,
     }
   });
@@ -42,18 +43,19 @@ const DogView = () => {
   } });
 
   const handleBreedFilter = (breed) => {
+    console.log(breed)
     const breedIDs = breedData.breeds.map(breed => breed.id)
-    if (breed === ' ') setBreed(breedIDs);
+    if (breed === ``) setBreed(breedIDs);
     else setBreed([breed]);
   };
 
   const handleSizeFilter = (size) => {
-    if (size === ' ') setSize(['Small', 'Medium', 'Large']);
+    if (size === ``) setSize(['Small', 'Medium', 'Large']);
     else setSize([size]);
   }
 
   const handleSexFilter = (sex) => {
-    if (sex === ' ') setSex(['Male', 'Female']);
+    if (sex === ``) setSex(['Male', 'Female']);
     else setSex([sex]);
   }
 
@@ -93,12 +95,12 @@ const DogView = () => {
 
   return (
     <div className="dogview-main">
-      <DogAdd breeds={breedData?.breeds} refetchBreeds={refetch} refetchDogs={refetchDogs} setDogsUpdated={setDogsUpdated} dogsUpdated={dogsUpdated} />
+      {/* <DogAdd breeds={breedData?.breeds} refetchBreeds={refetch} refetchDogs={refetchDogs} setDogsUpdated={setDogsUpdated} dogsUpdated={dogsUpdated} /> */}
       <FilterSidebar filterHandlers={filterHandlers} selectedValues={selectedValues}/>
       {error ? <h2>Error Fetching Dogs</h2> : null}
       {loading ? <LoadingDisplay /> : null}
       {!error && !loading ?
-        <div style={{display: 'flex', flexDirection: 'column', width: 'fit-content'}}>
+        <div style={{display: 'flex', flexDirection: 'column', width: '80%'}}>
           <span>Lookin' at {countData?.dogs_aggregate?.aggregate?.count || 0} Puppers</span>
           <ul className="dogview-list">
             {renderDogs()}
