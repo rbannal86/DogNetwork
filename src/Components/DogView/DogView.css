@@ -11,10 +11,8 @@
     list-style: none;
     justify-content: space-between;
     flex-wrap: wrap;
-    width: 90%;
+    width: 100%;
     padding: 0;
-    padding-left: 3%;
-    min-width: 90%;
 }
 
 .dogview-list-item {

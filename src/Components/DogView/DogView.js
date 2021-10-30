@@ -4,6 +4,7 @@ import { FETCH_DOGS_FILTER, FETCH_BREEDS, FETCH_DOG_COUNT } from "../../graphql/
 import FilterSidebar from "../FilterSidebar/FilterSidebar";
 import LoadingDisplay from "../LoadingDisplay/LoadingDisplay";
 import DogAdd from "../DogAdd/DogAdd";
+import DogScroll from '../DogScroll/DogScroll'
 
 import './DogView.css'
 
@@ -18,6 +19,8 @@ const DogView = () => {
   const [dogsUpdated, setDogsUpdated] = useState(false);
   const [offset, setOffset] = useState(0)
 
+  const LIMIT = 60;
+
   const { loading, error, data, refetch: refetchDogs } = useQuery(FETCH_DOGS_FILTER, {
     variables: {
       breed,
@@ -25,7 +28,7 @@ const DogView = () => {
       sex,
       name,
       offset,
-      limit: 100,
+      limit: LIMIT,
     }
   });
 
@@ -43,7 +46,6 @@ const DogView = () => {
   } });
 
   const handleBreedFilter = (breed) => {
-    console.log(breed)
     const breedIDs = breedData.breeds.map(breed => breed.id)
     if (breed === ``) setBreed(breedIDs);
     else setBreed([breed]);
@@ -95,13 +97,13 @@ const DogView = () => {
 
   return (
     <div className="dogview-main">
-      {/* <DogAdd breeds={breedData?.breeds} refetchBreeds={refetch} refetchDogs={refetchDogs} setDogsUpdated={setDogsUpdated} dogsUpdated={dogsUpdated} /> */}
-      <FilterSidebar filterHandlers={filterHandlers} selectedValues={selectedValues}/>
+      <DogAdd breeds={breedData?.breeds} refetchBreeds={refetch} refetchDogs={refetchDogs} setDogsUpdated={setDogsUpdated} dogsUpdated={dogsUpdated} />
+      <FilterSidebar filterHandlers={filterHandlers} selectedValues={selectedValues} dogCount={countData?.dogs_aggregate?.aggregate?.count || 0}/>
       {error ? <h2>Error Fetching Dogs</h2> : null}
       {loading ? <LoadingDisplay /> : null}
       {!error && !loading ?
         <div style={{display: 'flex', flexDirection: 'column', width: '80%'}}>
-          <span>Lookin' at {countData?.dogs_aggregate?.aggregate?.count || 0} Puppers</span>
+          <DogScroll offset={offset} setOffset={setOffset} limit={LIMIT} dogCount={countData?.dogs_aggregate?.aggregate?.count || 0}/>
           <ul className="dogview-list">
             {renderDogs()}
           </ul>

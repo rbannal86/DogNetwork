@@ -3,7 +3,7 @@ import { FETCH_BREEDS, FETCH_SEXES, FETCH_SIZES } from '../../graphql/queries';
 import SelectFilter from '../DogFilter/SelectFilter';
 import InputFilter from '../DogFilter/InputFilter'
 
-const FilterSidebar = ({filterHandlers, selectedValues}) => {
+const FilterSidebar = ({filterHandlers, selectedValues, dogCount}) => {
     return(
         <div className='filtersidebar-main'>
             <h2>Filters</h2>
@@ -15,6 +15,7 @@ const FilterSidebar = ({filterHandlers, selectedValues}) => {
             <SelectFilter handleFilter={filterHandlers.handleSexFilter} selected={selectedValues.sex} query={FETCH_SEXES} subject='dogs' valueKey='sex' nameKey='sex' />
             <h3>Name</h3>
             <InputFilter handleFilter={filterHandlers.handleNameFilter} />
+            <h4>Lookin' at {dogCount} pupper{dogCount === 1 ? '' : 's'}</h4>
         </div>
     )
 }

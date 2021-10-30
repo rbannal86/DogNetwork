@@ -17,6 +17,7 @@ const DogAdd = ({ breeds, refetchBreeds, setDogsUpdated, dogsUpdated, refetchDog
     for(let i = 0; i < 5000; i++) {
       await handleNewDog()
       await timer(1000);
+      console.log(i)
     }
   }
 

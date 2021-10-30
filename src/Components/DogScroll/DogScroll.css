@@ -1,0 +1,9 @@
+.dogscroll-main {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.dogscroll-section > button {
+    font-size: 1.5rem;
+}
