@@ -1,40 +1,59 @@
-import { useState } from "react";
+import { useState, lazy, Suspense } from "react";
 import { useQuery } from "@apollo/client";
-import { FETCH_DOGS_FILTER } from "../../graphql/queries";
-
-import DogCard from '../DogCard/DogCard';
+import { FETCH_DOGS_FILTER, FETCH_BREEDS, FETCH_DOG_COUNT } from "../../graphql/queries";
 import FilterSidebar from "../FilterSidebar/FilterSidebar";
 import LoadingDisplay from "../LoadingDisplay/LoadingDisplay";
+import DogAdd from "../DogAdd/DogAdd";
 
 import './DogView.css'
 
+const DogCard = lazy(() => import('../DogCard/DogCard'))
+// import DogCard from '../DogCard/DogCard';
+
 const DogView = () => {
-  const [breed, setBreed] = useState([...Array(100).keys()]);
+  const [breed, setBreed] = useState([]);
   const [size, setSize] = useState(['Small', 'Medium', 'Large']);
   const [sex, setSex] = useState(['Male', 'Female']);
   const [name, setName] = useState('.*');
+  const [dogsUpdated, setDogsUpdated] = useState(false);
 
-  const { loading, error, data } = useQuery(FETCH_DOGS_FILTER, {
+  const { loading, error, data, refetch: refetchDogs } = useQuery(FETCH_DOGS_FILTER, {
     variables: {
       breed,
       size,
       sex,
-      name
+      name,
+      offset: 0,
+      limit: 100,
     }
   });
 
+  const {data: countData} = useQuery(FETCH_DOG_COUNT, {
+    variables: {
+      breed,
+      size,
+      sex,
+      name,
+    }
+  });
+
+  const { data: breedData, refetch } = useQuery(FETCH_BREEDS, { onCompleted: () => {
+    setBreed(breedData.breeds.map(breed => breed.id))
+  } });
+
   const handleBreedFilter = (breed) => {
-    if (breed === '') setBreed([...Array(100).keys()]);
+    const breedIDs = breedData.breeds.map(breed => breed.id)
+    if (breed === ' ') setBreed(breedIDs);
     else setBreed([breed]);
   };
 
   const handleSizeFilter = (size) => {
-    if (size === '') setSize(['Small', 'Medium', 'Large']);
+    if (size === ' ') setSize(['Small', 'Medium', 'Large']);
     else setSize([size]);
   }
 
   const handleSexFilter = (sex) => {
-    if (sex === '') setSex(['Male', 'Female']);
+    if (sex === ' ') setSex(['Male', 'Female']);
     else setSex([sex]);
   }
 
@@ -60,26 +79,31 @@ const DogView = () => {
   const renderDogs = () => {
     return data.dogs.map((dog, index) => {
       return <li key={`dog ${index}`} className="dogview-list-item">
-        <DogCard name={dog.name}
-          age={dog.age}
-          breed={dog.breedByBreed.name}
-          images={dog.images}
-          sex={dog.sex}
-        />
+        <Suspense fallback={<div>Loading...</div>}>
+          <DogCard name={dog.name}
+            age={dog.age}
+            breed={dog.breedByBreed.name}
+            images={dog.images}
+            sex={dog.sex}
+          />
+        </Suspense>
       </li>
     });
   }
 
   return (
     <div className="dogview-main">
-      {/* <DogFilter handleFilter={handleBreedFilter} selectedBreed={breed}/> */}
+      <DogAdd breeds={breedData?.breeds} refetchBreeds={refetch} refetchDogs={refetchDogs} setDogsUpdated={setDogsUpdated} dogsUpdated={dogsUpdated} />
       <FilterSidebar filterHandlers={filterHandlers} selectedValues={selectedValues}/>
       {error ? <h2>Error Fetching Dogs</h2> : null}
       {loading ? <LoadingDisplay /> : null}
       {!error && !loading ?
-        <ul className="dogview-list">
-          {renderDogs()}
-        </ul> :
+        <div style={{display: 'flex', flexDirection: 'column', width: 'fit-content'}}>
+          <span>Lookin' at {countData?.dogs_aggregate?.aggregate?.count || 0} Puppers</span>
+          <ul className="dogview-list">
+            {renderDogs()}
+          </ul>
+        </div> :
         null
       }
     </div>

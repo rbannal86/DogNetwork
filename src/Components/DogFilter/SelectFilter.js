@@ -1,4 +1,6 @@
 import { useQuery } from "@apollo/client";
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
 
 import './DogFilter.css';
 
@@ -10,25 +12,27 @@ const SelectFilter = ({handleFilter, selected, query, subject, valueKey, nameKey
     if(loading) return <h3>Loading...</h3>
     
     const setSelected = () => {
-        if(selected.length > 1) return '';
+        console.log(selected)
+        if(selected.length > 1) return ' ';
         return selected[0];
     }
 
     const generateOptions = () => {
-        return data[subject].map((item) => <option value={item[valueKey]} key={item[valueKey]}>{item[nameKey]}</option>)
+        return data[subject].map((item) => <MenuItem value={item[valueKey]} key={item[valueKey]}>{item[nameKey]}</MenuItem>)
     }
 
     return(
-        <select
+        <Select
             name={subject}
-            id={subject}
+            labelId={subject}
             onChange={(e) => handleFilter(e.target.value)}
             defaultValue={setSelected()}
+            value={setSelected()}
             className="dogfilter-input"
         >
-            <option value={''}>Any</option>
+            <MenuItem value={' '}>Any</MenuItem>
             {generateOptions()}
-        </select>
+        </Select>
     )
 }
 
