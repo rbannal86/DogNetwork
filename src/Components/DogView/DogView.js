@@ -3,7 +3,6 @@ import { useQuery } from '@apollo/client';
 import { FETCH_DOGS_FILTER, FETCH_BREEDS, FETCH_DOG_COUNT } from '../../graphql/queries';
 import FilterSidebar from '../FilterSidebar/FilterSidebar';
 import LoadingDisplay from '../LoadingDisplay/LoadingDisplay';
-import DogAdd from '../DogAdd/DogAdd';
 import DogScroll from '../DogScroll/DogScroll';
 
 import './DogView.css';
@@ -16,12 +15,11 @@ const DogView = () => {
   const [size, setSize] = useState(['Small', 'Medium', 'Large']);
   const [sex, setSex] = useState(['Male', 'Female']);
   const [name, setName] = useState('.*');
-  const [dogsUpdated, setDogsUpdated] = useState(false);
   const [offset, setOffset] = useState(0);
 
   const LIMIT = 60;
 
-  const { loading, error, data, refetch: refetchDogs } = useQuery(FETCH_DOGS_FILTER, {
+  const { loading, error, data } = useQuery(FETCH_DOGS_FILTER, {
     variables: {
       breed,
       size,
@@ -41,7 +39,7 @@ const DogView = () => {
     }
   });
 
-  const { data: breedData, refetch } = useQuery(FETCH_BREEDS, { onCompleted: () => {
+  const { data: breedData } = useQuery(FETCH_BREEDS, { onCompleted: () => {
     setBreed(breedData.breeds.map(breed => breed.id));
   } });
 
@@ -100,7 +98,6 @@ const DogView = () => {
 
   return (
     <div className="dogview-main">
-      <DogAdd breeds={breedData?.breeds} refetchBreeds={refetch} refetchDogs={refetchDogs} setDogsUpdated={setDogsUpdated} dogsUpdated={dogsUpdated} />
       <FilterSidebar filterHandlers={filterHandlers} selectedValues={selectedValues} dogCount={countData?.dogs_aggregate?.aggregate?.count || 0}/>
       {error ? <h2>Error Fetching Dogs</h2> : null}
       {loading ? <LoadingDisplay /> : null}

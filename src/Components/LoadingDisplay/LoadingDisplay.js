@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
-import "./LoadingDisplay.css";
+import './LoadingDisplay.css';
 
 export default function LoadingDisplay() {
   //Step changes and rerenders, determines which boxes are current colored
@@ -24,56 +24,56 @@ export default function LoadingDisplay() {
 
   //Based on step number, displays empty or colored box
   return (
-    <div className={"loading_display_main"}>
+    <div className={'loading_display_main'}>
       {step >= 0 ? (
-        <div className={"loading_display_box zero"} />
+        <div className={'loading_display_box zero'} />
       ) : (
-        <div className={"loading_display_box empty"} />
+        <div className={'loading_display_box empty'} />
       )}
       {step >= 1 ? (
-        <div className={"loading_display_box one"} />
+        <div className={'loading_display_box one'} />
       ) : (
-        <div className={"loading_display_box empty"} />
+        <div className={'loading_display_box empty'} />
       )}
       {step >= 2 ? (
-        <div className={"loading_display_box two"} />
+        <div className={'loading_display_box two'} />
       ) : (
-        <div className={"loading_display_box empty"} />
+        <div className={'loading_display_box empty'} />
       )}
       {step >= 3 ? (
-        <div className={"loading_display_box three"} />
+        <div className={'loading_display_box three'} />
       ) : (
-        <div className={"loading_display_box empty"} />
+        <div className={'loading_display_box empty'} />
       )}
       {step >= 4 ? (
-        <div className={"loading_display_box four"} />
+        <div className={'loading_display_box four'} />
       ) : (
-        <div className={"loading_display_box empty"} />
+        <div className={'loading_display_box empty'} />
       )}
       {step >= 5 ? (
-        <div className={"loading_display_box five"} />
+        <div className={'loading_display_box five'} />
       ) : (
-        <div className={"loading_display_box empty"} />
+        <div className={'loading_display_box empty'} />
       )}
       {step >= 6 ? (
-        <div className={"loading_display_box six"} />
+        <div className={'loading_display_box six'} />
       ) : (
-        <div className={"loading_display_box empty"} />
+        <div className={'loading_display_box empty'} />
       )}
       {step >= 7 ? (
-        <div className={"loading_display_box seven"} />
+        <div className={'loading_display_box seven'} />
       ) : (
-        <div className={"loading_display_box empty"} />
+        <div className={'loading_display_box empty'} />
       )}
       {step >= 8 ? (
-        <div className={"loading_display_box eight"} />
+        <div className={'loading_display_box eight'} />
       ) : (
-        <div className={"loading_display_box empty"} />
+        <div className={'loading_display_box empty'} />
       )}
       {step >= 9 ? (
-        <div className={"loading_display_box nine"} />
+        <div className={'loading_display_box nine'} />
       ) : (
-        <div className={"loading_display_box empty"} />
+        <div className={'loading_display_box empty'} />
       )}
     </div>
   );

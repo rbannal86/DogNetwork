@@ -23,6 +23,5 @@ module.exports = {
         'react/react-in-jsx-scope': 'off',
         'react/prop-types': 'off',
         'semi': [2, 'always'],
-        'quotes': [2, 'single', {'avoidEscape': true}],
     }
 };
