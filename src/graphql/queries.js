@@ -25,7 +25,7 @@ export const FETCH_BREEDS = gql`
             id
         }
     }
-`
+`;
 
 export const FETCH_SIZES = gql`
     query SizeQuery {
@@ -33,7 +33,7 @@ export const FETCH_SIZES = gql`
         size
         }
     }
-`
+`;
 
 export const FETCH_SEXES = gql`
     query MyQuery {
@@ -41,7 +41,7 @@ export const FETCH_SEXES = gql`
         sex
         }
     }
-`
+`;
 
 export const FETCH_DOGS_FILTER =  gql`
     query MyQuery($breed: [Int], $size: [String], $sex: [String], $name: String, $offset: Int, $limit: Int) {
@@ -59,7 +59,7 @@ export const FETCH_DOGS_FILTER =  gql`
           }
         }
       }
-    `
+    `;
 
 export const FETCH_DOG_COUNT = gql`
         query MyQuery($breed: [Int], $size: [String], $sex: [String], $name: String) {
@@ -69,7 +69,7 @@ export const FETCH_DOG_COUNT = gql`
                 }
             }
         }
-`
+`;
 
 export const INSERT_BREED = gql`
     mutation insert_single_breed($object: breeds_insert_input!) {
@@ -77,7 +77,7 @@ export const INSERT_BREED = gql`
             id
         }
     }
-    `
+    `;
 
 export const INSERT_DOG = gql`
     mutation addDog($object: dogs_insert_input!) {
@@ -85,4 +85,4 @@ export const INSERT_DOG = gql`
             id
         }
     }
-`
+`;

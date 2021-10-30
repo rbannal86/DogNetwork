@@ -4,7 +4,7 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import CardMedia from '@mui/material/CardMedia';
 import React from 'react';
-import './DogCard.css'
+import './DogCard.css';
 
 const DogCard = ({name, breed, age, images, sex}) => {
     const card = (
@@ -36,14 +36,14 @@ const DogCard = ({name, breed, age, images, sex}) => {
                 </Box>
             </CardContent>
         </React.Fragment>
-    )
+    );
 
     return(
         <Box sx={{border: 2, borderColor: 'black', height: 175 }}>
             <Card sx ={{ display: 'flex', height: 175, width: 350 }}variant="outlined">{card}</Card>
         </Box>
         
-    )
-}
+    );
+};
 
 export default DogCard;

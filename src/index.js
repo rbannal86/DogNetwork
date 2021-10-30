@@ -1,8 +1,8 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import App from "./App";
-import reportWebVitals from "./reportWebVitals";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
 import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from '@apollo/client';
 
 const httpLink = createHttpLink({
@@ -11,7 +11,7 @@ const httpLink = createHttpLink({
     'x-hasura-admin-secret': process.env.REACT_APP_X_HASURA_ADMIN_SECRET,
     'content-type': 'application/json',
   }
-})
+});
 
 const client = new ApolloClient({
   link: httpLink,
@@ -24,7 +24,7 @@ ReactDOM.render(
       <App />
     </React.StrictMode>
   </ApolloProvider>,
-  document.getElementById("root")
+  document.getElementById('root')
 );
 
 // If you want to start measuring performance in your app, pass a function

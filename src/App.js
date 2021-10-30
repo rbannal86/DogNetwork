@@ -1,5 +1,5 @@
-import "./App.css";
-import DogView from "./Components/DogView/DogView";
+import './App.css';
+import DogView from './Components/DogView/DogView';
 
 function App() {
   return (

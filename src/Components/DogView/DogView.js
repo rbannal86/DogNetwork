@@ -1,14 +1,14 @@
-import { useState, lazy, Suspense } from "react";
-import { useQuery } from "@apollo/client";
-import { FETCH_DOGS_FILTER, FETCH_BREEDS, FETCH_DOG_COUNT } from "../../graphql/queries";
-import FilterSidebar from "../FilterSidebar/FilterSidebar";
-import LoadingDisplay from "../LoadingDisplay/LoadingDisplay";
-import DogAdd from "../DogAdd/DogAdd";
-import DogScroll from '../DogScroll/DogScroll'
+import { useState, lazy, Suspense } from 'react';
+import { useQuery } from '@apollo/client';
+import { FETCH_DOGS_FILTER, FETCH_BREEDS, FETCH_DOG_COUNT } from '../../graphql/queries';
+import FilterSidebar from '../FilterSidebar/FilterSidebar';
+import LoadingDisplay from '../LoadingDisplay/LoadingDisplay';
+import DogAdd from '../DogAdd/DogAdd';
+import DogScroll from '../DogScroll/DogScroll';
 
-import './DogView.css'
+import './DogView.css';
 
-const DogCard = lazy(() => import('../DogCard/DogCard'))
+const DogCard = lazy(() => import('../DogCard/DogCard'));
 // import DogCard from '../DogCard/DogCard';
 
 const DogView = () => {
@@ -17,7 +17,7 @@ const DogView = () => {
   const [sex, setSex] = useState(['Male', 'Female']);
   const [name, setName] = useState('.*');
   const [dogsUpdated, setDogsUpdated] = useState(false);
-  const [offset, setOffset] = useState(0)
+  const [offset, setOffset] = useState(0);
 
   const LIMIT = 60;
 
@@ -42,24 +42,27 @@ const DogView = () => {
   });
 
   const { data: breedData, refetch } = useQuery(FETCH_BREEDS, { onCompleted: () => {
-    setBreed(breedData.breeds.map(breed => breed.id))
+    setBreed(breedData.breeds.map(breed => breed.id));
   } });
 
   const handleBreedFilter = (breed) => {
-    const breedIDs = breedData.breeds.map(breed => breed.id)
+    const breedIDs = breedData.breeds.map(breed => breed.id);
+    // eslint-disable-next-line quotes
     if (breed === ``) setBreed(breedIDs);
     else setBreed([breed]);
   };
 
   const handleSizeFilter = (size) => {
+    // eslint-disable-next-line quotes
     if (size === ``) setSize(['Small', 'Medium', 'Large']);
     else setSize([size]);
-  }
+  };
 
   const handleSexFilter = (sex) => {
+    // eslint-disable-next-line quotes
     if (sex === ``) setSex(['Male', 'Female']);
     else setSex([sex]);
-  }
+  };
 
   const handleNameFilter = (name) => {
     if (name === '') setName('.*');
@@ -71,14 +74,14 @@ const DogView = () => {
     handleSizeFilter,
     handleSexFilter,
     handleNameFilter
-  }
+  };
 
   const selectedValues = {
     size,
     breed,
     sex,
     name
-  }
+  };
 
   const renderDogs = () => {
     return data.dogs.map((dog, index) => {
@@ -91,9 +94,9 @@ const DogView = () => {
             sex={dog.sex}
           />
         </Suspense>
-      </li>
+      </li>;
     });
-  }
+  };
 
   return (
     <div className="dogview-main">

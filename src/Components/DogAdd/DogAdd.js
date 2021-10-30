@@ -3,11 +3,11 @@ import { useState } from 'react';
 import faker from 'faker';
 import { INSERT_BREED, INSERT_DOG } from '../../graphql/queries';
 
-const DogAdd = ({ breeds, refetchBreeds, setDogsUpdated, dogsUpdated, refetchDogs }) => {
+const DogAdd = ({ breeds, setDogsUpdated, dogsUpdated }) => {
   const SEX = ['Male', 'Female'];
   const SIZE = ['Small', 'Medium', 'Large'];
 
-  const [creatingDog, setCreatingDog] = useState(false)
+  const [creatingDog, setCreatingDog] = useState(false);
   const [addBreed] = useMutation(INSERT_BREED);
   const [addDog] = useMutation(INSERT_DOG);
 
@@ -15,14 +15,14 @@ const DogAdd = ({ breeds, refetchBreeds, setDogsUpdated, dogsUpdated, refetchDog
 
   const handleMultipleNewDogs = async () => {
     for(let i = 0; i < 5000; i++) {
-      await handleNewDog()
+      await handleNewDog();
       await timer(1000);
-      console.log(i)
+      console.log(i);
     }
-  }
+  };
 
   const handleNewDog = async () => {
-    setCreatingDog(true)
+    setCreatingDog(true);
     const name = faker.name.firstName();
     const breed = faker.animal.dog();
     const sex = SEX[Math.floor(Math.random() * 2)];
@@ -32,19 +32,18 @@ const DogAdd = ({ breeds, refetchBreeds, setDogsUpdated, dogsUpdated, refetchDog
 
     let breedID;
 
-    console.log(breed)
+    console.log(breed);
     if(breeds.some(curr => curr.name === breed)) {
-      breedID = breeds.filter(curr => curr.name === breed)[0].id
+      breedID = breeds.filter(curr => curr.name === breed)[0].id;
     } else {
       const breedVariables = {
         object: {
           name: breed,
           size
         }
-      }
-      const breedData = await addBreed({ variables: breedVariables })
+      };
+      const breedData = await addBreed({ variables: breedVariables });
       breedID = breedData.data.insert_breeds_one.id;
-      // refetchBreeds()
     }
 
     const dogVariables = {
@@ -59,12 +58,11 @@ const DogAdd = ({ breeds, refetchBreeds, setDogsUpdated, dogsUpdated, refetchDog
         sex,
         breed: breedID
       }
-    }
-    await addDog({ variables: dogVariables })
-    // await refetchDogs()
-    setCreatingDog(false)
-    setDogsUpdated(!dogsUpdated)
-  }
+    };
+    await addDog({ variables: dogVariables });
+    setCreatingDog(false);
+    setDogsUpdated(!dogsUpdated);
+  };
 
   return (
     <div>

@@ -11,7 +11,7 @@ const InputFilter = ({handleFilter}) => {
             variant="standard"
             sx={{ backgroundColor: 'whitesmoke', width: '100%', fontSize: '1.2rem', height: '2rem'}}
         />
-    )
-}
+    );
+};
 
 export default InputFilter;
