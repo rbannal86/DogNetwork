@@ -17,7 +17,6 @@ const DogAdd = ({ breeds, setDogsUpdated, dogsUpdated }) => {
     for(let i = 0; i < 5000; i++) {
       await handleNewDog();
       await timer(1000);
-      console.log(i);
     }
   };
 
@@ -32,7 +31,6 @@ const DogAdd = ({ breeds, setDogsUpdated, dogsUpdated }) => {
 
     let breedID;
 
-    console.log(breed);
     if(breeds.some(curr => curr.name === breed)) {
       breedID = breeds.filter(curr => curr.name === breed)[0].id;
     } else {
