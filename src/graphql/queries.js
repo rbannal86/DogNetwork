@@ -45,7 +45,7 @@ export const FETCH_SEXES = gql`
 
 export const FETCH_DOGS_FILTER =  gql`
     query MyQuery($breed: [Int], $size: [String], $sex: [String], $name: String, $offset: Int, $limit: Int) {
-        dogs(offset: $offset, limit: $limit, where: {deactivated: {_is_null: true}, name: {_regex: $name} sex: {_in: $sex}, breed: {_in: $breed}, breedByBreed: {size: {_in: $size}}}) {
+        dogs(offset: $offset, limit: $limit, where: {deactivated: {_is_null: true}, name: {_regex: $name}, sex: {_in: $sex}, breed: {_in: $breed}, breedByBreed: {size: {_in: $size}}}) {
           age
           sex
           breedByBreed {
@@ -60,6 +60,27 @@ export const FETCH_DOGS_FILTER =  gql`
         }
       }
     `;
+
+export const generateFilterQuery = (additionalFilters) => {
+    const filterString = `offset: $offset, limit: $limit, where: {deactivated: {_is_null: true}, ${additionalFilters}}`;
+    return gql`
+    query MyQuery($breed: [Int], $size: [String], $sex: [String], $name: String, $offset: Int, $limit: Int) {
+        dogs(${filterString}) {
+          age
+          sex
+          breedByBreed {
+            id
+            name
+            size
+          }
+          name
+          images {
+            url
+          }
+        }
+      }
+    `;
+};
 
 export const FETCH_DOG_COUNT = gql`
         query MyQuery($breed: [Int], $size: [String], $sex: [String], $name: String) {

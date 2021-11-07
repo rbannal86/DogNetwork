@@ -1,6 +1,6 @@
 import { useState, lazy, Suspense } from 'react';
 import { useQuery } from '@apollo/client';
-import { FETCH_DOGS_FILTER, FETCH_BREEDS, FETCH_DOG_COUNT } from '../../graphql/queries';
+import { FETCH_BREEDS, FETCH_DOG_COUNT, generateFilterQuery } from '../../graphql/queries';
 import FilterSidebar from '../FilterSidebar/FilterSidebar';
 import LoadingDisplay from '../LoadingDisplay/LoadingDisplay';
 import DogScroll from '../DogScroll/DogScroll';
@@ -19,7 +19,20 @@ const DogView = () => {
 
   const LIMIT = 60;
 
-  const { loading, error, data } = useQuery(FETCH_DOGS_FILTER, {
+
+  const filterStrings = () => {
+    let computedString = '';
+    if (breed.length === 1) computedString = computedString + `breed: {_in: $breed},`;
+    if (size.length !== 3) computedString = computedString + `breedByBreed: {size: {_in: $size}},`;
+    if (sex.length === 1) computedString = computedString + `sex: {_in: $sex},`;
+    if (name !== '.*') computedString = computedString + `name: {_regex: $name},`;
+    console.log(computedString);
+    return computedString;
+  };
+
+  const queryToUse = generateFilterQuery(filterStrings());
+
+  const { loading, error, data } = useQuery(queryToUse, {
     variables: {
       breed,
       size,
