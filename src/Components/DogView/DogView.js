@@ -26,7 +26,6 @@ const DogView = () => {
     if (size.length !== 3) computedString = computedString + `breedByBreed: {size: {_in: $size}},`;
     if (sex.length === 1) computedString = computedString + `sex: {_in: $sex},`;
     if (name !== '.*') computedString = computedString + `name: {_regex: $name},`;
-    console.log(computedString);
     return computedString;
   };
 
